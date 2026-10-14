@@ -10,6 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { updateStaffRole } from "../actions";
+import { roleLabel } from "@/lib/roles";
 import type { Role } from "@/types/database";
 
 export function RoleSelectCell({
@@ -34,7 +35,7 @@ export function RoleSelectCell({
   return (
     <Select value={role} onValueChange={handleChange} disabled={disabled || isPending}>
       <SelectTrigger size="sm" className="w-28">
-        <SelectValue />
+        <SelectValue>{roleLabel(role)}</SelectValue>
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="staff">Staf</SelectItem>

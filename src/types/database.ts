@@ -233,6 +233,10 @@ export type Database = {
         };
         Returns: void;
       };
+      delete_invoice: {
+        Args: { p_invoice_id: string };
+        Returns: void;
+      };
     };
   };
 };

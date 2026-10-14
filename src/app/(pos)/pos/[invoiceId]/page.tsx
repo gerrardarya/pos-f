@@ -1,7 +1,4 @@
 import { notFound } from "next/navigation";
-import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/server";
@@ -10,6 +7,7 @@ import { CartTable } from "./_components/cart-table";
 import { InvoiceNameField } from "./_components/invoice-name-field";
 import { CheckoutDialog } from "./_components/checkout-dialog";
 import { CancelSaleButton } from "./_components/cancel-sale-button";
+import { BackButton } from "./_components/back-button";
 import { invoiceStatusLabel } from "@/lib/statuses";
 import type { Database } from "@/types/database";
 
@@ -47,14 +45,13 @@ export default async function PosSalePage({
   }
 
   const readOnly = invoice.status !== "draft";
+  const isEmpty = !readOnly && (items ?? []).length === 0;
 
   return (
     <div className="mx-auto flex max-w-5xl flex-col gap-4">
       <div className="flex items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon-sm" render={<Link href="/pos" />}>
-            <ArrowLeft className="size-4" />
-          </Button>
+          <BackButton invoiceId={invoice.id} isEmpty={isEmpty} />
           <InvoiceNameField
             invoiceId={invoice.id}
             initialName={invoice.name}

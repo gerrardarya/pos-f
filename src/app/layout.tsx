@@ -16,8 +16,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Kasir",
-  description: "Sistem kasir (point of sale)",
+  title: "Munculjaya",
+  description: "Sistem kasir (point of sale) Munculjaya",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

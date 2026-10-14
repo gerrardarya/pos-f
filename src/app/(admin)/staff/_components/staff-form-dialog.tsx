@@ -110,7 +110,7 @@ export function StaffFormDialog() {
             <Label>Peran</Label>
             <Select value={role} onValueChange={(v) => setRole(v as "staff" | "admin")}>
               <SelectTrigger className="w-full">
-                <SelectValue />
+                <SelectValue>{role === "staff" ? "Staf" : "Admin"}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="staff">Staf</SelectItem>

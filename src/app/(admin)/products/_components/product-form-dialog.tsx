@@ -242,7 +242,7 @@ export function ProductFormDialog({
                       disabled={isPending}
                     >
                       <SelectTrigger className="w-28 shrink-0">
-                        <SelectValue />
+                        <SelectValue>{stockTier ? stockTier.unit_name : baseUnit}</SelectValue>
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="base">{baseUnit}</SelectItem>

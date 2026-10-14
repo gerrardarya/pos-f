@@ -51,6 +51,11 @@ export function AdjustStockDialog({
     ? unitsByProductId.get(selectedProduct.id) ?? []
     : [];
   const selectedTier = selectedUnits.find((u) => u.id === unit);
+  const unitLabel = unit === "base"
+    ? selectedProduct?.base_unit
+    : selectedTier
+      ? `${selectedTier.unit_name} (isi ${selectedTier.qty_in_base} ${selectedProduct?.base_unit})`
+      : undefined;
 
   function handleSubmit(formData: FormData) {
     setError(null);
@@ -109,7 +114,11 @@ export function AdjustStockDialog({
               disabled={Boolean(product) || isPending}
             >
               <SelectTrigger className="w-full">
-                <SelectValue placeholder="Pilih produk" />
+                <SelectValue placeholder="Pilih produk">
+                  {selectedProduct
+                    ? `${selectedProduct.name} (${selectedProduct.stock_qty} ${selectedProduct.base_unit})`
+                    : undefined}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 {(product ? [product] : products).map((p) => (
@@ -129,7 +138,9 @@ export function AdjustStockDialog({
               disabled={isPending}
             >
               <SelectTrigger className="w-full">
-                <SelectValue />
+                <SelectValue>
+                  {direction === "add" ? "Tambah (restock)" : "Kurangi (koreksi/rusak)"}
+                </SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="add">Tambah (restock)</SelectItem>
@@ -147,7 +158,7 @@ export function AdjustStockDialog({
                 disabled={isPending}
               >
                 <SelectTrigger className="w-full">
-                  <SelectValue />
+                  <SelectValue>{unitLabel}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="base">{selectedProduct?.base_unit}</SelectItem>

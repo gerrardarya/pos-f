@@ -32,6 +32,9 @@ function ProductRow({
   const [qty, setQty] = useState("1");
   const [isPending, startTransition] = useTransition();
 
+  const unitLabel =
+    unit === "base" ? product.base_unit : units.find((u) => u.id === unit)?.unit_name;
+
   function handleAdd() {
     const qtyNum = Number(qty);
     if (!Number.isFinite(qtyNum) || qtyNum <= 0) {
@@ -73,7 +76,7 @@ function ProductRow({
         {units.length > 0 && (
           <Select value={unit} onValueChange={(v) => setUnit(v ?? "base")}>
             <SelectTrigger size="sm" className="w-24">
-              <SelectValue />
+              <SelectValue>{unitLabel}</SelectValue>
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="base">{product.base_unit}</SelectItem>

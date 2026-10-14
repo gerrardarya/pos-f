@@ -28,7 +28,7 @@ export function AppShell({
             <div className="flex size-7 items-center justify-center rounded-lg bg-primary text-primary-foreground">
               <Store className="size-4" />
             </div>
-            <span className="text-sm font-semibold">Kasir</span>
+            <span className="text-sm font-semibold">Munculjaya</span>
           </div>
         </SidebarHeader>
         <SidebarContent>

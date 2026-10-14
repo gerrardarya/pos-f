@@ -1,6 +1,5 @@
 import Link from "next/link";
-import { Plus, Receipt } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Receipt } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -9,10 +8,13 @@ import {
 } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
 import { formatCurrency } from "@/lib/format";
+import { cleanupEmptyDrafts } from "@/lib/cleanup-drafts";
 import { createDraftInvoice } from "./actions";
+import { StartSaleButton } from "./_components/start-sale-button";
 
 export default async function PosPage() {
   const supabase = await createClient();
+  await cleanupEmptyDrafts(supabase);
   const { data: drafts } = await supabase
     .from("invoices")
     .select("id, name, total, created_at")
@@ -22,10 +24,7 @@ export default async function PosPage() {
   return (
     <div className="mx-auto flex max-w-2xl flex-col gap-6">
       <form action={createDraftInvoice}>
-        <Button type="submit" size="lg" className="w-full">
-          <Plus className="size-4" />
-          Mulai transaksi baru
-        </Button>
+        <StartSaleButton />
       </form>
 
       <Card>

@@ -11,11 +11,16 @@ import {
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/server";
+import { requireUser } from "@/lib/auth";
 import { formatCurrency, formatDateTime } from "@/lib/format";
 import { invoiceStatusLabel } from "@/lib/statuses";
+import { cleanupEmptyDrafts } from "@/lib/cleanup-drafts";
+import { DeleteInvoiceButton } from "./_components/delete-invoice-button";
 
 export default async function InvoicesPage() {
+  const user = await requireUser();
   const supabase = await createClient();
+  await cleanupEmptyDrafts(supabase);
 
   const { data: invoices } = await supabase
     .from("invoices")
@@ -76,23 +81,32 @@ export default async function InvoicesPage() {
                     {formatCurrency(invoice.total)}
                   </TableCell>
                   <TableCell>
-                    {invoice.status === "draft" ? (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        render={<Link href={`/pos/${invoice.id}`} />}
-                      >
-                        Lanjutkan
-                      </Button>
-                    ) : (
-                      <Button
-                        variant="ghost"
-                        size="icon-sm"
-                        render={<Link href={`/invoices/${invoice.id}/print`} />}
-                      >
-                        <Printer className="size-4" />
-                      </Button>
-                    )}
+                    <div className="flex items-center justify-end gap-1">
+                      {invoice.status === "draft" ? (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          render={<Link href={`/pos/${invoice.id}`} />}
+                        >
+                          Lanjutkan
+                        </Button>
+                      ) : (
+                        <Button
+                          variant="ghost"
+                          size="icon-sm"
+                          render={<Link href={`/invoices/${invoice.id}/print`} />}
+                        >
+                          <Printer className="size-4" />
+                        </Button>
+                      )}
+                      {user.role === "admin" && (
+                        <DeleteInvoiceButton
+                          invoiceId={invoice.id}
+                          invoiceName={invoice.name}
+                          status={invoice.status}
+                        />
+                      )}
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

@@ -88,7 +88,7 @@ export function CheckoutDialog({
               onValueChange={(v) => setPaymentMethod(v as "cash" | "other")}
             >
               <SelectTrigger id="payment_method" className="w-full">
-                <SelectValue />
+                <SelectValue>{paymentMethod === "cash" ? "Tunai" : "Lainnya"}</SelectValue>
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="cash">Tunai</SelectItem>

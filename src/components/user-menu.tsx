@@ -1,10 +1,12 @@
 "use client";
 
+import { useTransition } from "react";
 import { ChevronsUpDown, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
@@ -29,6 +31,14 @@ function initialsOf(name: string) {
 }
 
 export function UserMenu({ user }: { user: CurrentUser }) {
+  const [isPending, startTransition] = useTransition();
+
+  function handleSignOut() {
+    startTransition(async () => {
+      await signOut();
+    });
+  }
+
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -52,13 +62,19 @@ export function UserMenu({ user }: { user: CurrentUser }) {
           <DropdownMenuContent align="end" side="top" className="w-56">
             {user.email && (
               <>
-                <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
-                  {user.email}
-                </DropdownMenuLabel>
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="truncate font-normal text-muted-foreground">
+                    {user.email}
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
                 <DropdownMenuSeparator />
               </>
             )}
-            <DropdownMenuItem variant="destructive" onClick={() => signOut()}>
+            <DropdownMenuItem
+              variant="destructive"
+              onClick={handleSignOut}
+              disabled={isPending}
+            >
               <LogOut />
               Keluar
             </DropdownMenuItem>
